@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.springframework.org/schema/beans"
+        xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-4.3.xsd">
+
+    <!--- DAOs -->
+    <bean id="messageDao" class="dao.impl.MessageDaoImpl"/>
+    <bean id="userDao" class="dao.impl.UserDaoImpl"/>
+
+    <!--- Services -->
+    <bean id="userService" class="services.impl.UserServiceImpl">
+        <constructor-arg ref="userDao"/>
+    </bean>
+    <bean id="messageService" class="services.impl.MessageServiceImpl">
+        <constructor-arg ref="messageDao"/>
+    </bean>
+
+    <!--- UserService commands -->
+    <bean id="register" class="commands.impl.UserRegisterCommand">
+        <constructor-arg ref="userService"/>
+    </bean>
+    <bean id="authorize" class="commands.impl.UserAuthorizeCommand">
+        <constructor-arg ref="userService"/>
+    </bean>
+
+    <!--- MsgService commands -->
+    <bean id="sendMessage" class="commands.impl.MessageSendCommand">
+        <constructor-arg ref="messageService"/>
+    </bean>
+    <bean id="getMessages" class="commands.impl.MessagesGetCommand">
+        <constructor-arg ref="messageService"/>
+    </bean>
+    <bean id="deleteMessage" class="commands.impl.MessageDeleteCommand">
+        <constructor-arg ref="messageService"/>
+    </bean>
+</beans>
